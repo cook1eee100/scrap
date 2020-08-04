@@ -8,10 +8,11 @@ URL = movie_list_url
 movie_list = []
 
 response = requests.get(URL)
-soup = BeautifulSoup(response.text, 'lxml')
+soup = BeautifulSoup(response.text, 'html.parser')
 
 
-movie_code_list = soup.select('div.basic > div[id=container] > div[id=content] > div.article > div.obj_section > div.lst_wrap > ul.lst_detail_t1 > li')
+movie_code_list = soup.select('div.basic > div[id=container] > div[id=content] > div.article > div.obj_section > div.lst_wrap > ul> li')
+# soup.select(#content > div.article > div.obj_section > div.lst_wrap > ul > li)
 
 # print(movie_code_list)
 
