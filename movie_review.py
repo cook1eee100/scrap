@@ -42,6 +42,7 @@ for i, code_li in enumerate(movie_code_list):
         ('isActualPointWriteExecute', 'false'),
         ('isMileageSubscriptionAlready', 'false'),
         ('isMileageSubscriptionReject', 'false'),
+        ('page', '1')
     )
     review_response = requests.get('https://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn', headers=headers, params=params)
     review_soup = BeautifulSoup(review_response.text, 'html.parser')
@@ -50,9 +51,16 @@ for i, code_li in enumerate(movie_code_list):
 
 
     for j, li in enumerate(review_list):
-        title = movie_code_list[i]['title']
+        
+        if li.select(f'div.score_reple > p > #_filtered_ment_{str(j)} > span._unfold_ment'):
+            review = li.select_one(f'div.score_reple > p > #_filtered_ment_{str(j)} > span._unfold_ment > a')['data-src']
+        else:
+            review = li.select_one(f'div.score_reple > p > #_filtered_ment_{str(j)}').text.strip()
+        title = movie_code_list[i]['title']+''
         score = li.select_one('div.star_score > em').text
-        review = li.select_one(f'div.score_reple > p > #_filtered_ment_{str(j)}').text.strip()
+
+        
         print(title, score, review)
 
 
+    
